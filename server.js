@@ -31,12 +31,7 @@ app.use(cookieParser())
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
-const io = new Server(server, {
-    cors: {
-        origin: "https://aschatreact.onrender.com/",
-        methods: ["GET", "POST"]
-    }
-});
+const io = new Server(server);
 
 // CONNECT
 io.on('connection', socket => {
