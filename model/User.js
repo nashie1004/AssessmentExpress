@@ -10,7 +10,13 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    messages: []
+    history: {
+        type: Map,
+        of: [],
+        default: {
+            'test': 101
+        }
+    }
 })
 
-module.exports = mongoose.model('asWithImagesLast11', UserSchema)
+module.exports = mongoose.model('1ass22', UserSchema)

@@ -55,11 +55,13 @@ io.on('connection', socket => {
         if (data.messages.length !== 0){
             const owner = await UserModel.findOne({name: data.owner})
             const to = await UserModel.findOne({name: data.to})
-            owner.messages = data.messages
-            to.messages = data.messages
-            owner.save() //
+
+            owner.history.set(data.to.toString(), data.messages)
+            to.history.set(data.owner.toString(), data.messages)
+
+            owner.save() 
             to.save() 
-    
+            
             io.to(data.room).emit('saveConvo', data.messages)
         }
     })
@@ -127,10 +129,10 @@ app.get('/getAllUsers', async (req, res) => {
     }
 })
 
-app.get('/getInitialMessages/:name', async (req, res) => {
+app.get('/getInitialMessages/:owner/:to', async (req, res) => {
     try{
-        const user = await UserModel.findOne({name: req.params.name})
-        res.json({user})
+        const ownerModel = await UserModel.findOne({name: req.params.owner})
+        res.json({user: ownerModel})
     } catch (err){
         res.status(400).send(err)
     }
